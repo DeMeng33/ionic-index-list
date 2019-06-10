@@ -1,0 +1,32 @@
+.index-section-index {
+  margin: 0;
+  padding: .2em 1em;
+  background-color: #eee;
+}
+
+.index-section-main {
+  /*border-bottom: 1px solid #dedede;*/
+}
+
+.index-section-current .index-section-index {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 3;
+  transform: translateZ(0px);
+
+}
+
+.index-section.hide {
+  .index-section-main {
+    display: none;
+  }
+}
+
+.index-section.show {
+  .index-section-main {
+    display: block;
+  }
+}
