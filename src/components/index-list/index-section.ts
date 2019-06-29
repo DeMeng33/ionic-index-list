@@ -1,5 +1,6 @@
 import {AfterViewChecked, Component, ContentChildren, ElementRef, Input, QueryList} from '@angular/core';
 import {IndexCellComponent} from './index-cell';
+import {Events} from '@ionic/angular';
 
 // 字母索引 单个字母列表模块封装 这里处理了字母显示
 @Component({
@@ -31,7 +32,8 @@ export class IndexSectionComponent implements AfterViewChecked {
 
   @ContentChildren(IndexCellComponent) _listOfIndexCell: QueryList<IndexCellComponent>;
 
-  constructor(public elementRef: ElementRef) {
+  constructor(public elementRef: ElementRef,
+              private events: Events) {
 
   }
 
@@ -44,5 +46,6 @@ export class IndexSectionComponent implements AfterViewChecked {
 
   hide() {
     this.className = this.className === 'hide' ? 'show' : 'hide';
+    this.events.publish('eventTest', 'calculationSectionOffsetTop');
   }
 }

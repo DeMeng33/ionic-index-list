@@ -7,12 +7,12 @@ import {Component} from '@angular/core';
 })
 export class HomePage {
   key: string;
-  spell = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'M', 'N', 'L', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+  spell = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'M'];
   contactGroup = [];
 
   constructor() {
     // 数据 同步获取 会导致索引黏贴位置错误
-    // setTimeout(() => {
+    setTimeout(() => {
     this.spell.forEach(c => {
       const data = [];
       for (let i = 0; i < 10; i++) {
@@ -23,6 +23,6 @@ export class HomePage {
         Data: data
       });
     });
-    // }, 0);
+    }, 0);
   }
 }

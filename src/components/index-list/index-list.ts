@@ -1,5 +1,6 @@
 import {AfterViewChecked, Component, ContentChildren, ElementRef, Input, QueryList, ViewChild} from '@angular/core';
 import {IndexSectionComponent} from './index-section';
+import {Events} from '@ionic/angular';
 
 // 字母索引 多个字母列表模块封装 这里处理了侧边栏 总人数
 @Component({
@@ -125,8 +126,11 @@ export class IndexListComponent implements AfterViewChecked {
   @ContentChildren(IndexSectionComponent) _listOfIndexSection: QueryList<IndexSectionComponent>;
   @ViewChild('scrollContent') scrollContent: ElementRef;
 
-  constructor() {
-
+  constructor(private events: Events) {
+    this.events.subscribe('eventTest', args => {
+      // console.log(args);
+      this.calculationOffsetHeight();
+    });
   }
 
   ngAfterViewChecked(): void {
@@ -137,7 +141,8 @@ export class IndexListComponent implements AfterViewChecked {
         this._sumTime = null;
 
         // 当列表变更后 更新字母表
-        const newSum = this._listOfIndexSection['_results'].reduce((sum, item) => [...sum, ...item._listOfIndexCell['_results']], []).length;
+        const newSum =
+          this._listOfIndexSection['_results'].reduce((sum, item) => [...sum, ...item._listOfIndexCell['_results']], []).length;
         if (newSum !== this._sumContact && this._listOfIndexSection) {
           // 重置基本信息
           this._sumContact = newSum;
@@ -169,6 +174,31 @@ export class IndexListComponent implements AfterViewChecked {
         }
       }, 300);
     }
+  }
+
+  calculationOffsetHeight() {
+    setTimeout(
+      () => {
+        this._indexes = [];
+        this._offsetTops = [];
+        // 赋值字母索引
+        this._listOfIndexSection.forEach((section) => {
+          // console.log(section.index);
+          // console.log(section.getElementRef().nativeElement.offsetTop);
+          this._indexes.push(section.index);
+          this._offsetTops.push(section.getElementRef().nativeElement.offsetTop);
+        });
+
+        if (this.hasTop) {
+          this._indexes.unshift('↑');
+          this._offsetTops.unshift(0);
+          this._currentIndicator = '↑';
+        } else {
+          if (this._indexes.length) {
+            this._currentIndicator = this._indexes[0];
+          }
+        }
+      }, 300);
   }
 
   onScroll(e: any) {
@@ -214,7 +244,6 @@ export class IndexListComponent implements AfterViewChecked {
       clearTimeout(this._indicatorTime);
     }
   }
-
 
   setCurrentSection(currentindex: string) {
     const listArray = this._listOfIndexSection.toArray();
